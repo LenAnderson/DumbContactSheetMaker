@@ -178,7 +178,7 @@ namespace DumbContactSheetMaker
             int rowW = settings.sheetWidth;
             foreach (ImageInfo image in images)
             {
-                if (rowW >= settings.sheetWidth || (settings.largeFirst && rows.Count < 1))
+                if (rowW >= settings.sheetWidth || (settings.largeFirst && rows.Count == 1))
                 {
                     row = new List<ImageInfo>();
                     rows.Add(new Row(row));
