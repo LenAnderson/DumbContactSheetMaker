@@ -4,6 +4,10 @@ namespace DumbContactSheetMaker
 {
     class Settings
     {
+		// output
+		public OutputLocation Output;
+		public string OutputPath;
+		
         // size
         public int sheetWidth;
         public int thumbHeight;
@@ -24,9 +28,17 @@ namespace DumbContactSheetMaker
         public Font titleFont;
         public Color titleFontColor;
 
+
+
+
         public Settings()
         {
 
         }
+
+
+
+
+		public enum OutputLocation { ImageFolder, RootFolder, Folder }
     }
 }

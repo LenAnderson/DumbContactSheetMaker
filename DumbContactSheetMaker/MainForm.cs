@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace DumbContactSheetMaker
@@ -19,6 +20,8 @@ namespace DumbContactSheetMaker
                 || settings.thumbHeight == 0
                 || (settings.cover && settings.coverPath == "")
                 || (settings.title && settings.titleCustom && settings.titleText == "")
+				|| (settings.Output == Settings.OutputLocation.Folder && settings.OutputPath == "")
+				|| (settings.Output == Settings.OutputLocation.RootFolder && !chkRecursive.Checked)
                 )
             {
                 MessageBox.Show("Settings incomplete", "Settings incomplete", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -53,9 +56,9 @@ namespace DumbContactSheetMaker
                 }));
             }
             else
-            {
-                prgProgress.Value = step;
-                prgProgress.Maximum = stepMax;
+			{
+				prgProgress.Maximum = stepMax;
+				prgProgress.Value = step;
                 txtProgress.Text = statusPrefix + status;
                 this.Enabled = status == "done";
             }
@@ -64,6 +67,12 @@ namespace DumbContactSheetMaker
         private Settings GetSettings()
         {
             Settings settings = new Settings();
+
+			// output
+			if (rdoOutputImgFolder.Checked) settings.Output = Settings.OutputLocation.ImageFolder;
+			else if (rdoOutputRoot.Checked) settings.Output = Settings.OutputLocation.RootFolder;
+			else if (rdoOutputFolder.Checked) settings.Output = Settings.OutputLocation.Folder;
+			settings.OutputPath = txtOutputFolder.Text;
 
             // size
             settings.sheetWidth = (int)numSheetWidth.Value;
@@ -138,12 +147,37 @@ namespace DumbContactSheetMaker
         private void btnFolderBrowse_Click(object sender, EventArgs e)
         {
             dlgFolderBrowse.ShowDialog();
-            txtFolder.Text = dlgFolderBrowse.SelectedPath;
+			txtFolder.Text = Path.GetDirectoryName(dlgFolderBrowse.FileName);
         }
 
         private void chkMaxNumThumbs_CheckedChanged(object sender, EventArgs e)
         {
             numMaxNumThumbs.Enabled = chkMaxNumThumbs.Checked;
         }
-    }
+
+		private void btnOutputFolderBrowse_Click(object sender, EventArgs e)
+		{
+			dlgOutputFolderPath.ShowDialog();
+			txtOutputFolder.Text = Path.GetDirectoryName(dlgOutputFolderPath.FileName);
+		}
+
+		private void rdoOutput_CheckedChanged(object sender, EventArgs e)
+		{
+			if (rdoOutputFolder.Checked)
+			{
+				txtOutputFolder.Enabled = true;
+				btnOutputFolderBrowse.Enabled = true;
+			}
+			else
+			{
+				txtOutputFolder.Enabled = false;
+				btnOutputFolderBrowse.Enabled = false;
+			}
+		}
+
+		private void chkRecursive_CheckedChanged(object sender, EventArgs e)
+		{
+			rdoOutputRoot.Enabled = chkRecursive.Checked;
+		}
+	}
 }

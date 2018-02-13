@@ -42,38 +42,53 @@ namespace DumbContactSheetMaker
 
         public void createSheetsRecursive(string path)
         {
-            Thread thread = new Thread(() => doCreateSheetsRecursive(path));
+            Thread thread = new Thread(() => doCreateSheetsRecursive(path, path));
             thread.Start();
         }
-        public void doCreateSheetsRecursive(string path)
+        public void doCreateSheetsRecursive(string path, string root)
         {
             DirectoryInfo[] dirs = new DirectoryInfo(path).GetDirectories();
             if (dirs.Length > 0)
             {
                 foreach (DirectoryInfo di in new DirectoryInfo(path).GetDirectories())
                 {
-                    doCreateSheetsRecursive(di.FullName);
+                    doCreateSheetsRecursive(di.FullName, root);
                 }
             }
             else
             {
                 StatusEvent.statusPrefix = "[" + new DirectoryInfo(path).Name + "] ";
-                doCreateSheet(path);
+                doCreateSheet(path, root);
             }
             
         }
         
         public void createSheet(string path)
+		{
+			createSheet(path, path);
+		}
+		public void createSheet(string path, string root)
         {
-            Thread thread = new Thread(() => doCreateSheet(path));
+            Thread thread = new Thread(() => doCreateSheet(path, root));
             thread.Start();
         }
-        public void doCreateSheet(string path)
+
+		public void doCreateSheet(string path)
+		{
+			doCreateSheet(path, path);
+		}
+        public void doCreateSheet(string path, string root)
         {
             OnStatusChanged(new StatusEvent() { step = 0, stepMax = 100, status = "getting images" });
             ImageInfo[] images = new DirectoryInfo(path).GetFiles()
                 .Where(file => extensions.Contains(file.Extension.ToLower()))
                 .Select(file => new ImageInfo(file)).ToArray<ImageInfo>();
+
+			if (images.Length == 0)
+			{
+				OnStatusChanged(new StatusEvent() { step = 1, stepMax = 1, status = "done" });
+				return;
+			}
 
             if (settings.useMaxNumThunbs && images.Length > settings.maxNumThumbs)
             {
@@ -151,16 +166,30 @@ namespace DumbContactSheetMaker
                         top += height;
                     }
                 }
-            }
-            OnStatusChanged(new StatusEvent() { step = step, stepMax = images.Length, status = "saving file" });
+			}
+
+			string outputPath;
+			switch (settings.Output)
+			{
+				case Settings.OutputLocation.Folder:
+					outputPath = settings.OutputPath;
+					break;
+				case Settings.OutputLocation.RootFolder:
+					outputPath = root;
+					break;
+				default:
+					outputPath = path;
+					break;
+			}
+			OnStatusChanged(new StatusEvent() { step = step, stepMax = images.Length, status = "saving file" });
             int fileNameCount = 0;
-            while (File.Exists(path + @"\_" + titleText + (fileNameCount==0?"":("_"+fileNameCount)) + @".jpg"))
+            while (File.Exists(outputPath + @"\_" + titleText + (fileNameCount==0?"":("_"+fileNameCount)) + @".jpg"))
             {
                 fileNameCount++;
             }
 
             sheet.Save(
-                path + @"\_" + titleText + (fileNameCount == 0 ? "" : ("_" + fileNameCount)) + @".jpg",
+				outputPath + @"\_" + titleText + (fileNameCount == 0 ? "" : ("_" + fileNameCount)) + @".jpg",
                 ImageCodecInfo.GetImageDecoders().First(c => c.FormatID == ImageFormat.Jpeg.Guid),
                 new EncoderParameters() {  Param = new[] { new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 90L)}}
                 );
