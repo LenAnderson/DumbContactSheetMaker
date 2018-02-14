@@ -13,7 +13,7 @@ Get the [latest release](https://github.com/LenAnderson/DumbContactSheetMaker/re
 - custom background colors and fonts
 
 ### Application Window
-![screenshot](http://i.imgur.com/lcC8t2U.png)
+![screenshot](https://i.imgur.com/gki22j0.png)
 
 ### Example with cover image (as first) and large first image
 ![example](http://i.imgur.com/IAGB016.jpg)
