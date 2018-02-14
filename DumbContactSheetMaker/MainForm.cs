@@ -6,6 +6,11 @@ namespace DumbContactSheetMaker
 {
     public partial class MainForm : Form
     {
+		DCSM dcsm;
+
+
+
+
         public MainForm()
         {
             InitializeComponent();
@@ -28,7 +33,7 @@ namespace DumbContactSheetMaker
             }
             else
             {
-                DCSM dcsm = new DCSM(settings);
+                dcsm = new DCSM(settings);
                 dcsm.StatusChanged += Dcsm_StatusChanged;
                 if (chkRecursive.Checked)
                 {
@@ -60,7 +65,11 @@ namespace DumbContactSheetMaker
 				prgProgress.Maximum = stepMax;
 				prgProgress.Value = step;
                 txtProgress.Text = statusPrefix + status;
-                this.Enabled = status == "done";
+				foreach (Control c in pnlContainer.Controls)
+				{
+					if (c == btnAbort) c.Enabled = status != "done";
+					else c.Enabled = status == "done";
+				}
             }
         }
 
@@ -178,6 +187,14 @@ namespace DumbContactSheetMaker
 		private void chkRecursive_CheckedChanged(object sender, EventArgs e)
 		{
 			rdoOutputRoot.Enabled = chkRecursive.Checked;
+		}
+
+		private void btnAbort_Click(object sender, EventArgs e)
+		{
+			if (dcsm != null)
+			{
+				dcsm.Abort();
+			}
 		}
 	}
 }

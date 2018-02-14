@@ -13,6 +13,7 @@ namespace DumbContactSheetMaker
     class DCSM
     {
         Settings settings;
+		bool aborting = false;
         string[] extensions = new string[] { ".jpg", ".tiff", ".bmp", ".png", ".gif" };
 
         public DCSM(Settings settings)
@@ -42,9 +43,10 @@ namespace DumbContactSheetMaker
 
         public void createSheetsRecursive(string path)
         {
+			aborting = false;
             Thread thread = new Thread(() => doCreateSheetsRecursive(path, path));
             thread.Start();
-        }
+		}
         public void doCreateSheetsRecursive(string path, string root)
         {
             DirectoryInfo[] dirs = new DirectoryInfo(path).GetDirectories();
@@ -52,6 +54,11 @@ namespace DumbContactSheetMaker
             {
                 foreach (DirectoryInfo di in new DirectoryInfo(path).GetDirectories())
                 {
+					if (aborting)
+					{
+						OnStatusChanged(new StatusEvent() { step = 1, stepMax = 1, status = "done" });
+						return;
+					}
                     doCreateSheetsRecursive(di.FullName, root);
                 }
             }
@@ -65,13 +72,14 @@ namespace DumbContactSheetMaker
         
         public void createSheet(string path)
 		{
+			aborting = false;
 			createSheet(path, path);
 		}
 		public void createSheet(string path, string root)
         {
             Thread thread = new Thread(() => doCreateSheet(path, root));
             thread.Start();
-        }
+		}
 
 		public void doCreateSheet(string path)
 		{
@@ -150,7 +158,12 @@ namespace DumbContactSheetMaker
                     graphics.CompositingMode = CompositingMode.SourceCopy;
                     foreach (Row row in rows)
                     {
-                        int left = 0;
+						if (aborting)
+						{
+							OnStatusChanged(new StatusEvent() { step = 1, stepMax = 1, status = "done" });
+							return;
+						}
+						int left = 0;
                         int height = row.GetHeight(settings.sheetWidth, settings.thumbHeight);
                         foreach (ImageInfo image in row.images)
                         {
@@ -184,8 +197,13 @@ namespace DumbContactSheetMaker
 			OnStatusChanged(new StatusEvent() { step = step, stepMax = images.Length, status = "saving file" });
             int fileNameCount = 0;
             while (File.Exists(outputPath + @"\_" + titleText + (fileNameCount==0?"":("_"+fileNameCount)) + @".jpg"))
-            {
-                fileNameCount++;
+			{
+				if (aborting)
+				{
+					OnStatusChanged(new StatusEvent() { step = 1, stepMax = 1, status = "done" });
+					return;
+				}
+				fileNameCount++;
             }
 
             sheet.Save(
@@ -218,5 +236,12 @@ namespace DumbContactSheetMaker
             }
             return rows;
         }
+
+
+
+		public void Abort()
+		{
+			aborting = true;
+		}
     }
 }

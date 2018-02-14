@@ -70,6 +70,8 @@
 			this.rdoOutputImgFolder = new System.Windows.Forms.RadioButton();
 			this.dlgOutputFolderPath = new System.Windows.Forms.OpenFileDialog();
 			this.dlgFolderBrowse = new System.Windows.Forms.OpenFileDialog();
+			this.pnlContainer = new System.Windows.Forms.Panel();
+			this.btnAbort = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.numSheetWidth)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numThumbHeight)).BeginInit();
 			this.grpCover.SuspendLayout();
@@ -77,6 +79,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.numMaxNumThumbs)).BeginInit();
 			this.grpTitle.SuspendLayout();
 			this.grpOutput.SuspendLayout();
+			this.pnlContainer.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -164,9 +167,9 @@
 			this.grpCover.Controls.Add(this.txtCoverPath);
 			this.grpCover.Controls.Add(this.chkCoverFirst);
 			this.grpCover.Controls.Add(this.chkCover);
-			this.grpCover.Location = new System.Drawing.Point(12, 324);
+			this.grpCover.Location = new System.Drawing.Point(0, 316);
 			this.grpCover.Name = "grpCover";
-			this.grpCover.Size = new System.Drawing.Size(537, 100);
+			this.grpCover.Size = new System.Drawing.Size(587, 100);
 			this.grpCover.TabIndex = 6;
 			this.grpCover.TabStop = false;
 			this.grpCover.Text = "Cover Image";
@@ -175,7 +178,7 @@
 			// 
 			this.btnCoverPathBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnCoverPathBrowse.Enabled = false;
-			this.btnCoverPathBrowse.Location = new System.Drawing.Point(456, 65);
+			this.btnCoverPathBrowse.Location = new System.Drawing.Point(506, 65);
 			this.btnCoverPathBrowse.Name = "btnCoverPathBrowse";
 			this.btnCoverPathBrowse.Size = new System.Drawing.Size(75, 23);
 			this.btnCoverPathBrowse.TabIndex = 7;
@@ -190,7 +193,7 @@
 			this.txtCoverPath.Location = new System.Drawing.Point(7, 67);
 			this.txtCoverPath.Name = "txtCoverPath";
 			this.txtCoverPath.ReadOnly = true;
-			this.txtCoverPath.Size = new System.Drawing.Size(443, 20);
+			this.txtCoverPath.Size = new System.Drawing.Size(493, 20);
 			this.txtCoverPath.TabIndex = 6;
 			// 
 			// chkCoverFirst
@@ -218,9 +221,9 @@
 			this.grpSize.Controls.Add(this.chkLargeFirst);
 			this.grpSize.Controls.Add(this.label2);
 			this.grpSize.Controls.Add(this.numThumbHeight);
-			this.grpSize.Location = new System.Drawing.Point(12, 195);
+			this.grpSize.Location = new System.Drawing.Point(0, 187);
 			this.grpSize.Name = "grpSize";
-			this.grpSize.Size = new System.Drawing.Size(537, 123);
+			this.grpSize.Size = new System.Drawing.Size(587, 123);
 			this.grpSize.TabIndex = 7;
 			this.grpSize.TabStop = false;
 			this.grpSize.Text = "Size";
@@ -280,9 +283,9 @@
 			this.grpTitle.Controls.Add(this.rdoTitleCustom);
 			this.grpTitle.Controls.Add(this.rdoTitleFolder);
 			this.grpTitle.Controls.Add(this.chkTitle);
-			this.grpTitle.Location = new System.Drawing.Point(12, 430);
+			this.grpTitle.Location = new System.Drawing.Point(0, 422);
 			this.grpTitle.Name = "grpTitle";
-			this.grpTitle.Size = new System.Drawing.Size(537, 120);
+			this.grpTitle.Size = new System.Drawing.Size(587, 120);
 			this.grpTitle.TabIndex = 8;
 			this.grpTitle.TabStop = false;
 			this.grpTitle.Text = "Title";
@@ -331,7 +334,7 @@
 			this.txtTitle.Enabled = false;
 			this.txtTitle.Location = new System.Drawing.Point(209, 42);
 			this.txtTitle.Name = "txtTitle";
-			this.txtTitle.Size = new System.Drawing.Size(322, 20);
+			this.txtTitle.Size = new System.Drawing.Size(372, 20);
 			this.txtTitle.TabIndex = 3;
 			// 
 			// rdoTitleCustom
@@ -378,7 +381,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(12, 17);
+			this.label5.Location = new System.Drawing.Point(0, 9);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(39, 13);
 			this.label5.TabIndex = 9;
@@ -388,16 +391,16 @@
 			// 
 			this.txtFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtFolder.Location = new System.Drawing.Point(57, 14);
+			this.txtFolder.Location = new System.Drawing.Point(45, 6);
 			this.txtFolder.Name = "txtFolder";
 			this.txtFolder.ReadOnly = true;
-			this.txtFolder.Size = new System.Drawing.Size(411, 20);
+			this.txtFolder.Size = new System.Drawing.Size(461, 20);
 			this.txtFolder.TabIndex = 10;
 			// 
 			// btnFolderBrowse
 			// 
 			this.btnFolderBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnFolderBrowse.Location = new System.Drawing.Point(474, 12);
+			this.btnFolderBrowse.Location = new System.Drawing.Point(512, 4);
 			this.btnFolderBrowse.Name = "btnFolderBrowse";
 			this.btnFolderBrowse.Size = new System.Drawing.Size(75, 23);
 			this.btnFolderBrowse.TabIndex = 11;
@@ -408,7 +411,7 @@
 			// chkRecursive
 			// 
 			this.chkRecursive.AutoSize = true;
-			this.chkRecursive.Location = new System.Drawing.Point(12, 40);
+			this.chkRecursive.Location = new System.Drawing.Point(0, 32);
 			this.chkRecursive.Name = "chkRecursive";
 			this.chkRecursive.Size = new System.Drawing.Size(278, 17);
 			this.chkRecursive.TabIndex = 12;
@@ -418,7 +421,7 @@
 			// 
 			// btnGo
 			// 
-			this.btnGo.Location = new System.Drawing.Point(12, 63);
+			this.btnGo.Location = new System.Drawing.Point(0, 55);
 			this.btnGo.Name = "btnGo";
 			this.btnGo.Size = new System.Drawing.Size(75, 23);
 			this.btnGo.TabIndex = 13;
@@ -430,19 +433,19 @@
 			// 
 			this.prgProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.prgProgress.Location = new System.Drawing.Point(93, 63);
+			this.prgProgress.Location = new System.Drawing.Point(162, 55);
 			this.prgProgress.Name = "prgProgress";
-			this.prgProgress.Size = new System.Drawing.Size(236, 23);
+			this.prgProgress.Size = new System.Drawing.Size(205, 23);
 			this.prgProgress.Step = 1;
 			this.prgProgress.TabIndex = 14;
 			// 
 			// txtProgress
 			// 
 			this.txtProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtProgress.Location = new System.Drawing.Point(335, 65);
+			this.txtProgress.Location = new System.Drawing.Point(373, 57);
 			this.txtProgress.Name = "txtProgress";
 			this.txtProgress.ReadOnly = true;
-			this.txtProgress.Size = new System.Drawing.Size(217, 20);
+			this.txtProgress.Size = new System.Drawing.Size(214, 20);
 			this.txtProgress.TabIndex = 15;
 			// 
 			// grpOutput
@@ -454,9 +457,9 @@
 			this.grpOutput.Controls.Add(this.rdoOutputFolder);
 			this.grpOutput.Controls.Add(this.rdoOutputRoot);
 			this.grpOutput.Controls.Add(this.rdoOutputImgFolder);
-			this.grpOutput.Location = new System.Drawing.Point(12, 93);
+			this.grpOutput.Location = new System.Drawing.Point(0, 85);
 			this.grpOutput.Name = "grpOutput";
-			this.grpOutput.Size = new System.Drawing.Size(537, 96);
+			this.grpOutput.Size = new System.Drawing.Size(587, 96);
 			this.grpOutput.TabIndex = 16;
 			this.grpOutput.TabStop = false;
 			this.grpOutput.Text = "Output Folder";
@@ -465,7 +468,7 @@
 			// 
 			this.btnOutputFolderBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnOutputFolderBrowse.Enabled = false;
-			this.btnOutputFolderBrowse.Location = new System.Drawing.Point(456, 63);
+			this.btnOutputFolderBrowse.Location = new System.Drawing.Point(506, 63);
 			this.btnOutputFolderBrowse.Name = "btnOutputFolderBrowse";
 			this.btnOutputFolderBrowse.Size = new System.Drawing.Size(75, 23);
 			this.btnOutputFolderBrowse.TabIndex = 12;
@@ -481,7 +484,7 @@
 			this.txtOutputFolder.Location = new System.Drawing.Point(69, 65);
 			this.txtOutputFolder.Name = "txtOutputFolder";
 			this.txtOutputFolder.ReadOnly = true;
-			this.txtOutputFolder.Size = new System.Drawing.Size(381, 20);
+			this.txtOutputFolder.Size = new System.Drawing.Size(431, 20);
 			this.txtOutputFolder.TabIndex = 11;
 			// 
 			// rdoOutputFolder
@@ -528,26 +531,51 @@
 			// 
 			// dlgFolderBrowse
 			// 
+			this.dlgFolderBrowse.CheckFileExists = false;
 			this.dlgFolderBrowse.FileName = "Folder Selection";
+			this.dlgFolderBrowse.ValidateNames = false;
+			// 
+			// pnlContainer
+			// 
+			this.pnlContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.pnlContainer.Controls.Add(this.grpOutput);
+			this.pnlContainer.Controls.Add(this.label5);
+			this.pnlContainer.Controls.Add(this.txtProgress);
+			this.pnlContainer.Controls.Add(this.grpCover);
+			this.pnlContainer.Controls.Add(this.prgProgress);
+			this.pnlContainer.Controls.Add(this.grpSize);
+			this.pnlContainer.Controls.Add(this.btnAbort);
+			this.pnlContainer.Controls.Add(this.btnGo);
+			this.pnlContainer.Controls.Add(this.grpTitle);
+			this.pnlContainer.Controls.Add(this.chkRecursive);
+			this.pnlContainer.Controls.Add(this.txtFolder);
+			this.pnlContainer.Controls.Add(this.btnFolderBrowse);
+			this.pnlContainer.Location = new System.Drawing.Point(12, 13);
+			this.pnlContainer.Name = "pnlContainer";
+			this.pnlContainer.Size = new System.Drawing.Size(587, 546);
+			this.pnlContainer.TabIndex = 17;
+			// 
+			// btnAbort
+			// 
+			this.btnAbort.Enabled = false;
+			this.btnAbort.Location = new System.Drawing.Point(81, 55);
+			this.btnAbort.Name = "btnAbort";
+			this.btnAbort.Size = new System.Drawing.Size(75, 23);
+			this.btnAbort.TabIndex = 13;
+			this.btnAbort.Text = "Abort";
+			this.btnAbort.UseVisualStyleBackColor = true;
+			this.btnAbort.Click += new System.EventHandler(this.btnAbort_Click);
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(564, 559);
-			this.Controls.Add(this.grpOutput);
-			this.Controls.Add(this.txtProgress);
-			this.Controls.Add(this.prgProgress);
-			this.Controls.Add(this.btnGo);
-			this.Controls.Add(this.chkRecursive);
-			this.Controls.Add(this.btnFolderBrowse);
-			this.Controls.Add(this.txtFolder);
-			this.Controls.Add(this.label5);
-			this.Controls.Add(this.grpTitle);
-			this.Controls.Add(this.grpSize);
-			this.Controls.Add(this.grpCover);
+			this.ClientSize = new System.Drawing.Size(614, 571);
+			this.Controls.Add(this.pnlContainer);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimumSize = new System.Drawing.Size(580, 520);
+			this.MinimumSize = new System.Drawing.Size(630, 610);
 			this.Name = "MainForm";
 			this.Text = "Dumb Contact Sheet Maker";
 			((System.ComponentModel.ISupportInitialize)(this.numSheetWidth)).EndInit();
@@ -561,8 +589,9 @@
 			this.grpTitle.PerformLayout();
 			this.grpOutput.ResumeLayout(false);
 			this.grpOutput.PerformLayout();
+			this.pnlContainer.ResumeLayout(false);
+			this.pnlContainer.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
         }
 
@@ -609,6 +638,8 @@
 		private System.Windows.Forms.RadioButton rdoOutputImgFolder;
 		private System.Windows.Forms.OpenFileDialog dlgOutputFolderPath;
 		private System.Windows.Forms.OpenFileDialog dlgFolderBrowse;
+		private System.Windows.Forms.Panel pnlContainer;
+		private System.Windows.Forms.Button btnAbort;
 	}
 }
 
