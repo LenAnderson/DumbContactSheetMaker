@@ -12,6 +12,164 @@ namespace DumbContactSheetMaker
 {
     class DCSM
     {
+        public static void RunFromCommandLine(string[] args)
+        {
+            var settings = new Settings();
+            var recursive = false;
+            var path = "";
+            for(var i = 0; i < args.Length; i++)
+            {
+                var arg = args[i];
+                switch (arg)
+                {
+                    case "--output":
+                    case "-o":
+                        if (args.Length > i + 1)
+                        {
+                            var val = args[++i];
+                            switch (val)
+                            {
+                                case "i":
+                                    settings.Output = Settings.OutputLocation.ImageFolder;
+                                    break;
+                                case "r":
+                                    settings.Output = Settings.OutputLocation.RootFolder;
+                                    break;
+                                default:
+                                    settings.Output = Settings.OutputLocation.Folder;
+                                    settings.OutputPath= val;
+                                    break;
+                            }
+                        }
+                        break;
+                    case "--recursive":
+                    case "-r":
+                        recursive = true;
+                        break;
+                    case "--width":
+                    case "-w":
+                        if (args.Length > i+1)
+                        {
+                            settings.sheetWidth = Convert.ToInt32(args[++i]);
+                        }
+                        break;
+                    case "--height":
+                    case "-h":
+                        if (args.Length > i+1)
+                        {
+                            settings.thumbHeight= Convert.ToInt32(args[++i]);
+                        }
+                        break;
+                    case "--max-num":
+                    case "-mn":
+                        if (args.Length > i+1)
+                        {
+                            settings.useMaxNumThunbs = true;
+                            settings.maxNumThumbs= Convert.ToInt32(args[++i]);
+                        }
+                        break;
+                    case "--large-first":
+                    case "-lf":
+                        settings.largeFirst = true;
+                        break;
+                    case "--cover":
+                    case "-c":
+                        if (args.Length > i+1)
+                        {
+                            settings.cover = true;
+                            settings.coverPath= args[++i];
+                        }
+                        break;
+                    case "--cover-first":
+                    case "-cf":
+                        settings.coverFirst = true;
+                        break;
+                    case "--title":
+                    case "-t":
+                        settings.title = true;
+                        break;
+                    case "--title-text":
+                    case "-tt":
+                        if (args.Length > i+1)
+                        {
+                            settings.titleCustom = true;
+                            settings.titleText= args[++i];
+                        }
+                        break;
+                    case "--background":
+                    case "-bg":
+                        if (args.Length > i+1 && args[++i].Length == 8)
+                        {
+                            settings.titleBgColor = Color.FromArgb(
+                                Convert.ToInt32(args[i].Substring(6, 2), 16),
+                                Convert.ToInt32(args[i].Substring(0, 2), 16),
+                                Convert.ToInt32(args[i].Substring(2, 2), 16),
+                                Convert.ToInt32(args[i].Substring(4, 2), 16)
+                                );
+                        }
+                        break;
+                    case "--font":
+                    case "-f":
+                        if (args.Length > i + 1)
+                        {
+                            settings.titleFont = new Font(args[++i], settings.titleFont.Size, settings.titleFont.Style);
+                        }
+                        break;
+                    case "--font-color":
+                    case "-fc":
+                        if (args.Length > i + 1 && args[++i].Length == 8)
+                        {
+                            settings.titleFontColor = Color.FromArgb(
+                                Convert.ToInt32(args[i].Substring(6, 2), 16),
+                                Convert.ToInt32(args[i].Substring(0, 2), 16),
+                                Convert.ToInt32(args[i].Substring(2, 2), 16),
+                                Convert.ToInt32(args[i].Substring(4, 2), 16)
+                                );
+                        }
+                        break;
+                    case "--font-size":
+                    case "-fs":
+                        if (args.Length > i + 1)
+                        {
+                            settings.titleFont = new Font(settings.titleFont.SystemFontName, Convert.ToInt32(args[++i]), settings.titleFont.Style);
+                        }
+                        break;
+                    case "--font-style":
+                    case "-fst":
+                        if (args.Length > i + 1)
+                        {
+                            var styles = args[++i];
+                            settings.titleFont = new Font(
+                                settings.titleFont.SystemFontName,
+                                settings.titleFont.Size,
+                                settings.titleFont.Style | (styles.Contains("b") ? FontStyle.Bold : 0) | (styles.Contains("i") ? FontStyle.Italic : 0)
+                                );
+                        }
+                        break;
+                    default:
+                        path = args[i];
+                        break;
+
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                var maker = new DCSM(settings);
+                if (recursive)
+                {
+                    maker.createSheetsRecursive(path);
+                }
+                else
+                {
+                    maker.createSheet(path);
+                }
+            }
+        }
+
+
+
+
         Settings settings;
 		bool aborting = false;
         string[] extensions = new string[] { ".jpg", ".tiff", ".bmp", ".png", ".gif" };
@@ -88,21 +246,20 @@ namespace DumbContactSheetMaker
         public void doCreateSheet(string path, string root)
         {
             OnStatusChanged(new StatusEvent() { step = 0, stepMax = 100, status = "getting images" });
-            ImageInfo[] images = new DirectoryInfo(path).GetFiles()
-                .Where(file => extensions.Contains(file.Extension.ToLower()))
-                .Select(file => new ImageInfo(file)).ToArray<ImageInfo>();
+            var files = new DirectoryInfo(path).GetFiles().Where(file => extensions.Contains(file.Extension.ToLower())).ToArray<FileInfo>();
 
-			if (images.Length == 0)
+			if (files.Length == 0)
 			{
 				OnStatusChanged(new StatusEvent() { step = 1, stepMax = 1, status = "done" });
 				return;
 			}
 
-            if (settings.useMaxNumThunbs && images.Length > settings.maxNumThumbs)
+            if (settings.useMaxNumThunbs && files.Length > settings.maxNumThumbs)
             {
-                int nStep = (int)Math.Floor((decimal)images.Length / (decimal)settings.maxNumThumbs);
-                images = images.Where((x, i) => i % nStep == 0).Take(settings.maxNumThumbs).ToArray();
+                int nStep = (int)Math.Floor((decimal)files.Length / (decimal)settings.maxNumThumbs);
+                files = files.Where((x, i) => i % nStep == 0).Take(settings.maxNumThumbs).ToArray();
             }
+            ImageInfo[] images = files.Select(file => new ImageInfo(file)).ToArray<ImageInfo>();
 
             if (settings.cover)
             {
