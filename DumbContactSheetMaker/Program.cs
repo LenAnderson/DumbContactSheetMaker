@@ -42,7 +42,10 @@ namespace DumbContactSheetMaker
                     case "--help":
                     case "-h":
                         Console.WriteLine(Regex.Replace(@"
-                            usage: DumbContactSheetMaker [<options>] <path> [<options>]
+                            usage: DumbContactSheetMaker --help       to show this help
+                                   DumbContactSheetMaker --fonts      to list available fonts
+
+                                   DumbContactSheetMaker [<options>] <path> [<options>]
                             
                             options:
                                 --output [i|r|<path>]               where to save the cover sheet
